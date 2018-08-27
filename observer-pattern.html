@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Observer pattern!!</title>
+</head>
+<body>
+	<button onclick="createObserver()">New Observer</button>
+	<button onclick="subject.notify('question', 'Country name?')">Notify all</button>
+	<h1>Observer list</h1>
+	<div id="observerContainer"></div>
+
+	<h1>Questions..</h1>
+	<div id="questionContainer">
+		<button answer="lion" onclick="askQuestion(this)">National animal</button>
+		<button answer="Mumbai" onclick="askQuestion(this)">biggest city</button>
+		<button answer="Delhi" onclick="askQuestion(this)">India gate</button>
+	</div>
+
+	<script type="text/javascript">
+		var observerIndex = 0;
+		const observerContainer = document.querySelector('#observerContainer');
+
+		function askQuestion(item) {
+			const q = item.innerText;
+			const a = item.getAttribute('answer');
+			subject.notify('question', q, a);
+		}
+		function createObserver() {
+			const id = observerIndex++;
+			const observer = new CreateNewObserver(id);
+			subject.subscribe.call(subject, observer);
+		}
+		function CreateNewObserver(id) {
+			this.id = id;
+			this.listen = (type, message) => {
+				console.log('observer ' + this.id + ' is listening.. ', type, message);
+				if (type === 'question') {
+					setTimeout(() => {
+						subject.response(this, 'india');
+					}, 2000);
+				}
+			}
+		}
+		function findObserverIndexInList(observer) {
+			const list = subject.observerList;
+			return list.findIndex((item) => {
+				return item.id === observer.id;
+			});
+		}
+		function renderObserverList() {
+			console.log(observerContainer, subject.observerList);
+			const html = subject.observerList.map((item) => {
+				return '<button onclick="observerClicked(this)" data-id="'+ item.id +'">'+ item.id +'</button>';
+			});
+			observerContainer.innerHTML = html.join('');
+		}
+		function observerClicked(item) {
+			console.log('observer Clicked', item, item.getAttribute('data-id'));
+		}
+		var subject = {
+			subscribe: (o) => {
+				if (findObserverIndexInList(o) === -1) {
+					subject.observerList.push(o);
+					console.log(subject.observerList);
+					renderObserverList();
+				}
+			},
+			unscuscribe: (o) => {
+				const index = findObserverIndexInList(o);
+				if (index !== -1) {
+					subject.observerList.splice(index, 1);
+				}
+				console.log(this.observerList);
+			},
+			observerList: [],
+			notify: (type, message, message2) => {
+				if(type === 'question') {
+					subject.questionCompleted = false
+					subject.answer = message2;
+				}
+				subject.observerList.map((item, index) => {
+					item.listen(type, message);
+				});
+			},
+			response: (observer, message) => {
+				if (!subject.questionCompleted && message) {
+					subject.questionCompleted = true;
+					subject.notify('correct answer', message + ' - by - ' + observer
+						.id)
+				}		
+			}
+		}
+	</script>
+</body>
+</html>
