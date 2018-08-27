@@ -3,12 +3,16 @@
 	<head>
 		<title>watch</title>
 		<style type="text/css">
+			#watch {
+				margin: 30px 100px;
+			}
 			#watch2 {
 				width: 200px;
 				height: 200px;
 				border: 2px solid red;
 				border-radius: 50%;
 				position: relative;
+				margin: 30px 60px;
 			}
 			#second {
 				height: 0px;
@@ -48,8 +52,8 @@
 		</style>
 	</head>
 	<body>
-		<div id="watch">00:49:29</div>
-		<div id="watch2" style="">
+		<h1 id="watch">00:49:29</h1>
+		<div id="watch2" onclick="readTime()">
 		    <div id="second" style=""></div>
 		    <div id="minute" style=""></div>
 		    <div id="hour" style=""></div>
@@ -57,10 +61,7 @@
 		<button onclick="readTime()">Read Time!!</button>
 
 		<script type="text/javascript">
-			// const watch = document.querySelector('#watch');
-			// const second = document.querySelector('#second');
 			function updateSecond(date) {
-				// const second = date.getSeconds();
 				window.time = date;
 			    second.style.transform = 'rotate(' + (date.getSeconds() - 15) * 6 + 'deg)';
 			    minute.style.transform = 'rotate(' + (date.getMinutes() - 15) * 6 + 'deg)';
