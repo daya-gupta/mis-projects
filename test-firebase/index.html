@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>firebase test</title>
+  <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.css" />
+</head>
+<body>
+  <div id="container">
+    <h1>This is a firebase enabled project..</h1>
+    <div id="react-container">
+      React stuff
+    </div>
+  
+  </div>
+  <script src="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.4.2/firebase.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.0.0/redux.js" crossorigin></script>
+  <script type="text/babel">
+    class LoginComponent extends React.PureComponent {
+      render() {
+        return (
+          <div id="loginContainer">
+            <div id="signInContainer">
+              Login:
+              <form name="singInForm" action="signInUser(event)">
+                <input type="email" name="email" />
+                <input type="password" name="password" />
+                <button type="button" onclick="singInUser(event)" name="singInButton">Sing-In</button>
+              </form>
+            </div>
+            <div id="signUpContainer">
+              Register:
+              <form name="singUpForm" action="signUpUser(event)">
+                <input type="email" name="email" />
+                <input type="password" name="password" />
+                <button type="button" onclick="singUpUser(event)" name="singUpButton">Sing-Up</button>
+              </form>
+            </div>
+          </div>
+        );
+      }
+    }
+
+    class TestPureComponent extends React.PureComponent {
+      render() {
+        console.log('r-pure', this.props);
+        if (!this.props.userName) {
+          <div>
+            <h3>User: NA</h3>
+            <LoginComponent />
+          </div>
+        }
+        return (
+          <div>
+            <button id="btn-signout">Sign-out</button>
+            <h3>User: {this.props.userName}</h3>
+            <h1>Welcome!!</h1>
+          </div>
+        );
+      }
+    }
+
+    function reactRender(data) {
+      const domContainer = document.querySelector('#react-container');
+      ReactDOM.render(<TestPureComponent userName={data.userName} />, domContainer);
+    }
+
+    reactRender({ userName: null });
+  </script>
+  <script src="./main.js"></script>
+  
+</body>
+</html>
